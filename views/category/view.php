@@ -2,7 +2,7 @@
     use yii\helpers\Url;
     use yii\widgets\LinkPager;
 
-    $this->title = 'Dianas jewelry | ' . $title['category_name'];
+    $this->title = 'Dianas jewelry | интернет магазин ювелирных изделий | ' . $title['category_name'];
     $pagination = LinkPager::widget([
                     'pagination' => $products['pagination'],
                     'activePageCssClass' => 'active',
@@ -17,8 +17,8 @@
 <div id="breadcrumbs">
     <div class="container">
         <ul>
-            <li><a href="#">Home</a></li>
-            <li>Product results</li>
+            <li><a href="/">Главная</a></li>
+            <li><?= $title['category_name'] ?></li>
         </ul>
     </div>
     <!-- / container -->
@@ -77,11 +77,11 @@
 
                     <? foreach($products['catProducts'] as $product) { ?>
                         <article>
-                            <a href="product.html"><img src="/images/<?= $product['img'] ?>" alt="<?= $product['name'] ?>"></a>
-                            <h3><a href="product.html"><?= $product['name'] ?></a></h3>
-                            <div><a href="product.html"><?= $product['short_description'] ?></a></div>
-                            <h4><a href="product.html">&#8381; <?= number_format($product['price'], 2, '.', ' ') ?></a></h4>
-                            <a href="cart.html" class="btn-add">В корзину</a>
+                            <a href="<?= Url::to(['product/index', 'alias' => $product['alias']]) ?>"><img src="/images/<?= $product['img'] ?>" alt="<?= $product['name'] ?>"></a>
+                            <h3><a href="<?= Url::to(['product/index', 'alias' => $product['alias']]) ?>"><?= $product['name'] ?></a></h3>
+                            <div><a href="<?= Url::to(['product/index', 'alias' => $product['alias']]) ?>"><?= $product['short_description'] ?></a></div>
+                            <h4><a href="<?= Url::to(['product/index', 'alias' => $product['alias']]) ?>">&#8381; <?= number_format($product['price'], 2, '.', ' ') ?></a></h4>
+                            <a href="#"  data-alias="<?= $product['alias'] ?>" class="btn-add">В корзину</a>
                         </article>
                     <? } ?>
 

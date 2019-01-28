@@ -206,6 +206,22 @@ a:hover {
 	background: url(../images/ico_header.png) no-repeat;
 }
 
+#header .right-links span.menu-total-quantity {
+	float: none;
+	background: none;
+	width: auto;
+	height: auto;
+	margin: 0;
+}
+
+#header .right-links span.menu-total-sum {
+	float: none;
+	background: none;
+	width: auto;
+	height: auto;
+	margin: 0;
+}
+
 #header .right-links span.ico-account {
 	background-position: -20px 0;
 }
@@ -757,6 +773,7 @@ h1 {
 	height: 53px;
 	font-family: "Roboto";
 	background-color: #373737;
+	border: none;
 }
 
 .btn-grey:hover{
@@ -773,6 +790,46 @@ h1 {
 
 .total-count h3 strong {
 	font-weight: 600;
+}
+
+.total-count .form-group {
+	margin-bottom: 10px;
+}
+
+.total-count .form-group .help-block {
+	text-transform: none;
+	color: rgba(255, 0, 0, 0.8);
+	font-size: 14px;
+}
+
+.total-count .form-group .control-label {
+	width: 85px;
+	display: inline-block;
+	text-align: right;
+}
+
+.total-count .form-group .form-control {
+	border: 1px solid #d3d3d3;
+	height: 30px;
+	padding: 5px;
+	vertical-align: middle;
+	margin-right: -5px;
+	font-family: "Roboto";
+	text-transform: uppercase;
+	color: #656567;
+	font-size: 12px;
+	width: 200px;
+}
+
+.empty-cart {
+	text-align: center;
+}
+
+.empty-cart h3 {
+	letter-spacing: -.7px;
+	color: #666668;
+	font-size: 36px;
+	padding: 49px 0 57px;
 }
 
 .cart-table {
@@ -802,9 +859,17 @@ h1 {
 	vertical-align: middle;
 }
 
-.cart-table img {
+.cart-table .image {
 	float: left;
 	padding-right: 20px;
+    width: 100px;
+	height: 100px;
+}
+
+.cart-table img {
+	/*float: left;*/
+	/*padding-right: 20px;*/
+    width: 100%;
 }
 
 .cart-table h3 {
@@ -849,6 +914,7 @@ h1 {
 	display: block;
 	height: 27px;
 	background: #666668 url(../images/ico_cross.png) no-repeat 50% 50%;
+	cursor: pointer;
 }
 
 .cart-table .ico-del:hover{
@@ -1011,6 +1077,7 @@ h1 {
 	margin-bottom: 39px;
 	margin-top: -1px;
 	border: 1px solid #cdcdcd;
+	min-height: 244px;
 }
 
 .entry .tab-content.active {

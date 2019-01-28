@@ -9,10 +9,10 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
+use app\assets\CartAsset;
 use yii\helpers\Url;
 
-AppAsset::register($this);
+CartAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -46,13 +46,8 @@ AppAsset::register($this);
                         , &#8381;<span class="menu-total-sum"><?= $_SESSION['cart.totalSum'] ? number_format($_SESSION['cart.totalSum'], 2, '.', ' ') : 0 ?></span>
                     </a>
                 </li>
-                <? if (!Yii::$app->user->isGuest) { ?>
-                    <li><a href="#"><span class="ico-account"></span>Аккаунт</a></li>
-                    <li><a href="/logout"><span class="ico-signout"></span>Выход</a></li>
-                <? } else { ?>
-                    <li><a href="/login"><span class="ico-signout"></span>Войти</a></li>
-                    <li><a href="#"><span class="ico-account"></span>Регистрация</a></li>
-                <? } ?>
+                <li><a href="#"><span class="ico-account"></span>Account</a></li>
+                <li><a href="#"><span class="ico-signout"></span>Sign out</a></li>
             </ul>
         </div>
     </div>

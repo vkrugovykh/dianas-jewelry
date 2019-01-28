@@ -9,10 +9,10 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
+use app\assets\AdminAsset;
 use yii\helpers\Url;
 
-AppAsset::register($this);
+AdminAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -24,7 +24,7 @@ AppAsset::register($this);
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title>Dianas jewelry | интернет магазин ювелирных изделий | <?= Html::encode($this->title) ?></title>
     <link rel="icon" href="/images/favicon.ico">
     <?php $this->head() ?>
 </head>
@@ -34,25 +34,10 @@ AppAsset::register($this);
 <header id="header">
     <div class="container">
         <a href="/" id="logo" title="Diana’s jewelry">Diana’s jewelry</a>
-        <form action="<?= Url::to(['category/search']) ?>" method="get">
-            <input type="text" class="search" placeholder="Поиск..." name="search">
-            <input type="submit" value="" class="search-btn">
-        </form>
         <div class="right-links">
             <ul>
-                <li>
-                    <a href="/cart"><span class="ico-products"></span>
-                        Товаров: <span class="menu-total-quantity"><?= $_SESSION['cart.totalQuantity'] ? $_SESSION['cart.totalQuantity'] : 0 ?></span>
-                        , &#8381;<span class="menu-total-sum"><?= $_SESSION['cart.totalSum'] ? number_format($_SESSION['cart.totalSum'], 2, '.', ' ') : 0 ?></span>
-                    </a>
-                </li>
-                <? if (!Yii::$app->user->isGuest) { ?>
-                    <li><a href="#"><span class="ico-account"></span>Аккаунт</a></li>
-                    <li><a href="/logout"><span class="ico-signout"></span>Выход</a></li>
-                <? } else { ?>
-                    <li><a href="/login"><span class="ico-signout"></span>Войти</a></li>
-                    <li><a href="#"><span class="ico-account"></span>Регистрация</a></li>
-                <? } ?>
+                <li><a href="#"><span class="ico-account"></span>Account</a></li>
+                <li><a href="#"><span class="ico-signout"></span>Sign out</a></li>
             </ul>
         </div>
     </div>
@@ -60,11 +45,23 @@ AppAsset::register($this);
 </header>
 <!-- / header -->
 
-<?= MenuWidget::widget() ?>
-
-<div class="content">
-    <?= $content ?>
+<div id="breadcrumbs">
+    <div class="container">
+        <ul>
+            <li><a href="/">Главная</a></li>
+            <li><?= Html::encode($this->title) ?></li>
+        </ul>
+    </div>
+    <!-- / container -->
 </div>
+<!-- / body -->
+
+<div id="body">
+    <div class="container">
+        <?= $content ?>
+    </div>
+</div>
+
 
 <footer id="footer">
     <div class="container">
