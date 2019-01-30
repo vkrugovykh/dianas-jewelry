@@ -195,8 +195,8 @@ class AdminController extends Controller
                     ->setTo($user->email)
                     ->setSubject('Успешная регистрация')
                     ->send();
-
-                return $this->goHome();
+                $access = 'ok';
+                return $this->render('signupok', compact('access'));
             }
         }
 
