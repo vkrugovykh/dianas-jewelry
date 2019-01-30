@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\LoginForm;
+use app\models\OrderProduct;
+use app\models\SignupForm;
 use app\models\User;
 use Yii;
 use app\models\Order;
@@ -60,6 +62,22 @@ class AdminController extends Controller
         } else {
             return $this->goHome();
         }
+    }
+
+
+    public function actionMycabinet()
+    {
+//        $userId = Yii::$app->user->identity->id;
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        $user = new User();
+        $userId = $user->getId();
+        $order = new Order();
+        $usersOrder = $order->getUserOrder($userId);
+        $orderProduct = new OrderProduct();
+        $orderList = $orderProduct->getOrdersList();
+        return $this->render('mycabinet', compact('usersOrder', 'orderList'));
     }
 
 
@@ -132,8 +150,16 @@ class AdminController extends Controller
                 'query' => Order::find(),
             ]);
             $user = new User();
+
+            $session = Yii::$app->session;
+            $session->open();
+            $session->remove('cart');
+            $session->remove('cart.totalQuantity');
+            $session->remove('cart.totalSum');
+
             if ($user->isAdmin()) {
-            return $this->render('index', compact('dataProvider'));
+                return Yii::$app->response->redirect('/admin');
+//            return $this->render('index', compact('dataProvider'));
             } else {
                 return $this->goHome();
             }
@@ -148,6 +174,39 @@ class AdminController extends Controller
         ]);
     }
 
+
+    public function actionSignup() {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $signUp = new SignupForm();
+
+        if($signUp->load(\Yii::$app->request->post()) && $signUp->validate()){
+            $user = new User();
+            $user->username = $signUp->username;
+            $user->email = $signUp->email;
+            $user->auth_key = $user->generateAuthKey();
+            $user->password = \Yii::$app->security->generatePasswordHash($signUp->password);
+            if($user->save()){
+                //Отправка письма для активации
+                Yii::$app->mailer->compose('signup-mail', ['user'=>$user, 'pass'=>$signUp->password])
+                    ->setFrom(['phpshop2019@gmail.com' => 'Dianas jewelry'])
+                    ->setTo($user->email)
+                    ->setSubject('Успешная регистрация')
+                    ->send();
+
+                return $this->goHome();
+            }
+        }
+
+        $this->layout = 'admin-layout';
+        return $this->render('signup', compact('signUp'));
+    }
+
+//    public function actionActivation() {
+//
+//    }
 
     protected function findModel($id)
     {

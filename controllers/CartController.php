@@ -33,6 +33,7 @@ class CartController extends Controller
         if ($order->load(Yii::$app->request->post())) {
             $order->date = date('Y-m-d H:i:s');
             $order->sum = $session['cart.totalSum'];
+            $order->user_id = Yii::$app->user->identity->id;
             if ($order->save()) {
                 $currentId = $order->id;
 

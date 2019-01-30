@@ -18,6 +18,11 @@ class Order extends \yii\db\ActiveRecord
         return $this->hasMany(OrderProduct::class, ['order_id' => 'id']);
     }
 
+    public function getUserOrder($id)
+    {
+        return Order::find()->where(['user_id' => $id])->orderBy(['id'=>SORT_DESC])->asArray()->all();
+    }
+
 
     public function rules()
     {

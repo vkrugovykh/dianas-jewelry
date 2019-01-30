@@ -19,7 +19,7 @@
     <div class="container">
         <ul>
             <li><a href="#">Home</a></li>
-            <li>Product results</li>
+            <li>Поиск</li>
         </ul>
     </div>
     <!-- / container -->

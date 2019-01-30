@@ -43,9 +43,12 @@ class CategoryController extends Controller
 //        $products = $products->getProductsCategories($id, $_GET['page'], $_GET['per-page']);
 
             //Получаем название категории
-            $title = new Category();
-            $title = $title->getCategoryTitle($id);
-
+            if ($id == 'promo') {
+                $title['category_name'] = 'промо акции';
+            } else {
+                $title = new Category();
+                $title = $title->getCategoryTitle($id);
+            }
             return $this->render('view', compact('products', ['title', 'allProducts']));
         }
 

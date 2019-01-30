@@ -1,7 +1,7 @@
 <?
     use yii\helpers\Url;
 
-    $this->title = 'Dianas jewelry | интернет магазин ювелирных изделий';
+    $this->title = 'Dianas jewelry | интернет магазин ювелирных изделий | ' . $product['name'];
 
     if (Yii::$app->user->isGuest) {
         $price = $product['price'];
@@ -15,8 +15,8 @@
 <div id="breadcrumbs">
     <div class="container">
         <ul>
-            <li><a href="#">Home</a></li>
-            <li>Product page</li>
+            <li><a href="/">Главная</a></li>
+            <li><?= $product['name']; ?></li>
         </ul>
     </div>
     <!-- / container -->

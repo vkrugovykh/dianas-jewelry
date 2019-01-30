@@ -2,12 +2,15 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+
+$this->title = 'Dianas jewelry | Корзина';
+
 ?>
 <div id="breadcrumbs">
     <div class="container">
         <ul>
-            <li><a href="#">Home</a></li>
-            <li>Cart</li>
+            <li><a href="/">Главная</a></li>
+            <li>Корзина</li>
         </ul>
     </div>
     <!-- / container -->

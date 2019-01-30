@@ -9,7 +9,7 @@
         <li style="background-image: url(/images/0.jpg)">
             <h3>Сделай свою жизнь лучше</h3>
             <h2>подлинные бриллианты</h2>
-            <a href="#" class="btn-more">Перейти</a>
+            <a href="/category/promo" class="btn-more">Перейти</a>
         </li>
         <li class="purple" style="background-image: url(/images/01.jpg)">
             <h3>Она обязательно скажет “да”</h3>

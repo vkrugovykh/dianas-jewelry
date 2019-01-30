@@ -36,8 +36,9 @@ AdminAsset::register($this);
         <a href="/" id="logo" title="Diana’s jewelry">Diana’s jewelry</a>
         <div class="right-links">
             <ul>
-                <li><a href="#"><span class="ico-account"></span>Account</a></li>
-                <li><a href="#"><span class="ico-signout"></span>Sign out</a></li>
+                    <li><a href="/"><span class="ico-account"></span>На сайт</a></li>
+                    <li><a href="/mycabinet"><span class="ico-account"></span>Личный кабинет</a></li>
+                    <li><a href="/logout"><span class="ico-signout"></span>Выход</a></li>
             </ul>
         </div>
     </div>
@@ -92,15 +93,17 @@ AdminAsset::register($this);
                 <p><span class="ico ico-ph"></span>(590) 423 446 924</p>
             </div>
             <div class="col newsletter">
-                <h3>Join our newsletter</h3>
-                <p>Sed ut perspiciatis unde omnis iste natus sit voluptatem accusantium doloremque laudantium.</p>
-                <form action="#">
-                    <input type="text" placeholder="Your email address...">
+                <h3>Присоединяйтесь к нашей рассылке</h3>
+                <p>Наши Акции и новости будут приходить непосредственно на Вашу почту.</p>
+                <form id="subscribe-form" action="/subscribe" method="post">
+                    <input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
+                    <input type="email" name="email" placeholder="Ваш email адрес..." required>
                     <button type="submit"></button>
                 </form>
+
             </div>
         </div>
-        <p class="copy">Copyright <?= date('Y') ?> Jewelry. All rights reserved.</p>
+        <p class="copy">Copyright <?= date('Y') ?> Jewelry. Это сайт, созданный в учебных целях.</p>
     </div>
     <!-- / container -->
 </footer>

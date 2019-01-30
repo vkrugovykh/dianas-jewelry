@@ -20,6 +20,11 @@ class OrderProduct extends \yii\db\ActiveRecord
         return $this->hasOne(OrderProduct::class, ['id' => 'order_id']);
     }
 
+    public function getOrdersList ()
+    {
+        return OrderProduct::find()->asArray()->all();
+    }
+
 
     public function rules()
     {

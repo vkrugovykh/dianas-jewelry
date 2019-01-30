@@ -82,8 +82,11 @@ $config = [
                 'cart/order/<id:\d+>' => 'cart/order',
                 'cart' => 'cart/open',
                 'login' => 'admin/login',
+                'signup' => 'admin/signup',
                 'logout' => 'admin/logout',
                 'subscribe' => 'subscribe/subscribe',
+                'mycabinet' => 'admin/mycabinet',
+
             ],
         ],
 

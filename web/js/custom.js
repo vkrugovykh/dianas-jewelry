@@ -70,31 +70,34 @@ function loadAll() {
 
     //Изменение количества товаров в корзине
     $('body').on('click', '.crf-sm li',  function() {
-        let qnt = $(this).text();
-        let id = $('#' + $(this).offsetParent().data('id')).parent('.qnt').data('id');
-        // let alias = $('#' + $(this).offsetParent().data('id')).parent('.qnt').data('alias');
+        if ($('.product').length === 0) {
+            let qnt = $(this).text();
+            let id = $('#' + $(this).offsetParent().data('id')).parent('.qnt').data('id');
+            // let alias = $('#' + $(this).offsetParent().data('id')).parent('.qnt').data('alias');
 
-        $.ajax({
-            url: '/cart/change',
-            data: {qnt: qnt, id: id},
-            type: 'GET',
-            success: function(response) {
-                $('.content').html(response);
-                loadAll();
-                $("select").crfs();
-                let totalSum = 0;
-                let totalCount = 0;
-                if ($('.total-count .total-quantity').html()) {
-                    totalSum = $('.total-count .total-sum').html().split('₽')[1];
-                    totalCount = $('.total-count .total-quantity').html().split(': ')[1];
+            $.ajax({
+                url: '/cart/change',
+                data: {qnt: qnt, id: id},
+                type: 'GET',
+                success: function(response) {
+                    $('.content').html(response);
+                    loadAll();
+                    $("select").crfs();
+                    let totalSum = 0;
+                    let totalCount = 0;
+                    if ($('.total-count .total-quantity').html()) {
+                        totalSum = $('.total-count .total-sum').html().split('₽')[1];
+                        totalCount = $('.total-count .total-quantity').html().split(': ')[1];
+                    }
+                    $('.menu-total-quantity').html(totalCount);
+                    $('.menu-total-sum').html(totalSum);
+                },
+                error: function() {
+                    alert('error');
                 }
-                $('.menu-total-quantity').html(totalCount);
-                $('.menu-total-sum').html(totalSum);
-            },
-            error: function() {
-                alert('error');
-            }
-        })
+            })
+        }
+
     });
 
 

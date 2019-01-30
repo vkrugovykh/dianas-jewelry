@@ -46,13 +46,18 @@ AppAsset::register($this);
                         , &#8381;<span class="menu-total-sum"><?= $_SESSION['cart.totalSum'] ? number_format($_SESSION['cart.totalSum'], 2, '.', ' ') : 0 ?></span>
                     </a>
                 </li>
-                <? if (!Yii::$app->user->isGuest) { ?>
-                    <li><a href="#"><span class="ico-account"></span>Аккаунт</a></li>
+                <? if (Yii::$app->user->isGuest) { ?>
+                    <li><a href="/login"><span class="ico-signout"></span>Войти</a></li>
+                    <li><a href="/signup"><span class="ico-account"></span>Регистрация</a></li>
+                <? } else if (Yii::$app->user->identity->is_admin === 1) { ?>
+                    <li><a href="/admin"><span class="ico-account"></span>Панель администратора</a></li>
+                    <li><a href="/mycabinet"><span class="ico-account"></span>Личный кабинет</a></li>
                     <li><a href="/logout"><span class="ico-signout"></span>Выход</a></li>
                 <? } else { ?>
-                    <li><a href="/login"><span class="ico-signout"></span>Войти</a></li>
-                    <li><a href="#"><span class="ico-account"></span>Регистрация</a></li>
+                    <li><a href="/mycabinet"><span class="ico-account"></span>Личный кабинет</a></li>
+                    <li><a href="/logout"><span class="ico-signout"></span>Выход</a></li>
                 <? } ?>
+
             </ul>
         </div>
     </div>

@@ -47,7 +47,9 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
 
     public function getId()
     {
-        return $this->id;
+        $id = Yii::$app->user->identity->id;
+        return $id;
+//        return $this->id;
     }
 
 
@@ -75,7 +77,10 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
 
     public function generateAuthKey()
     {
-        $this->auth_key = \Yii::$app->security->generateRandomeString();
+//        $this->auth_key = \Yii::$app->security->generateRandomeString();
+        $authKey = \Yii::$app->security->generateRandomString();
+        return $authKey;
+
     }
 
 
