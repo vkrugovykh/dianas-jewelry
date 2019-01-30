@@ -35,21 +35,30 @@ class CartController extends Controller
             $order->sum = $session['cart.totalSum'];
             if ($order->save()) {
                 $currentId = $order->id;
+
                 $this->saveOrderInfo($session['cart'], $currentId);
 
                 //Отправка письма о заказе покупателю
                 Yii::$app->mailer->compose('order-mail', ['session'=>$session, 'order'=>$order])
-                    ->setFrom(['phpshop2019@gmail.com' => 'PHP-shop'])
+                    ->setFrom(['phpshop2019@gmail.com' => 'Dianas jewelry'])
                     ->setTo($order->email)
                     ->setSubject('Ваш заказ принят')
                     ->send();
 
                 //Отправка письма о заказе администратору
                 Yii::$app->mailer->compose('admin-order-mail', ['session'=>$session, 'order'=>$order])
-                    ->setFrom(['phpshop2019@gmail.com' => 'PHP-shop'])
+                    ->setFrom(['phpshop2019@gmail.com' => 'Dianas jewelry'])
                     ->setTo(Yii::$app->params['adminEmail'])
                     ->setSubject('Новый заказ!')
                     ->send();
+
+                $session->set('lastOrderName', $order->name);
+                $session->set('lastOrderEmail', $order->email);
+                $session->set('lastOrderPhone', $order->phone);
+                $session->set('lastOrderAddress', $order->address);
+                $session->set('lastOrderOrderItems', $session['cart']);
+                $session->set('lastOrderTotalQuantity', $session['cart.totalQuantity']);
+                $session->set('lastOrderTotalSum', $session['cart.totalSum']);
 
                 $session->remove('cart');
                 $session->remove('cart.totalQuantity');
@@ -65,7 +74,9 @@ class CartController extends Controller
 
     protected function saveOrderInfo($products, $orderId)
     {
+
         foreach ($products as $id=>$product) {
+//            var_dump($product);die;
             $orderInfo = new OrderProduct();
             $orderInfo->order_id = $orderId;
             $orderInfo->product_id = $id;
@@ -87,6 +98,17 @@ class CartController extends Controller
         return $this->renderPartial('cart', compact('session', 'order'));
     }
 
+    public function actionChange($id, $qnt)
+    {
+        $session = Yii::$app->session;
+        $session->open();
+        $cart = new Cart();
+        $cart->changeInCart($id, $qnt);
+        $order = new Order();
+        return $this->renderPartial('cart', compact('session', 'order'));
+    }
+
+
     public function actionClear()
     {
         $session = Yii::$app->session;
@@ -106,14 +128,14 @@ class CartController extends Controller
         return $this->render('cart', compact('session', 'order'));
     }
 
-    public function actionAdd($alias)
+    public function actionAdd($alias, $qnt)
     {
         $product = new Products();
         $product = $product->getOneProduct($alias);
         $session = Yii::$app->session;
         $session->open();
         $cart = new Cart();
-        $cart->addToCart($product);
+        $cart->addToCart($product, $qnt);
 
         return $session['cart.totalQuantity'] . '/' . number_format($session['cart.totalSum'], 2, '.', ' ');
     }

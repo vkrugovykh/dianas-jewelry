@@ -1,5 +1,6 @@
 <?
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 ?>
 <div id="breadcrumbs">
@@ -28,16 +29,17 @@ use yii\widgets\ActiveForm;
                         <th class="delete"></th>
                     </tr>
                     <? foreach ($session['cart'] as $id => $product) { ?>
+
                         <tr>
                             <td class="items">
                                 <div class="image">
                                     <img src="/images/<?= $product['img'] ?>" alt="<?= $product['name'] ?>">
                                 </div>
-                                <h3><a href="#"><?= $product['name'] ?></a></h3>
+                                <h3><a href="<?= Url::to(['product/index', 'alias' => $product['alias']]) ?>"><?= $product['name'] ?></a></h3>
                                 <p><?= $product['short_description'] ?></p>
                             </td>
                             <td class="price">&#8381;<?= number_format($product['price'], 2, '.', ' ') ?></td>
-                            <td class="qnt"><select>
+                            <td class="qnt" data-alias="<?= $product['alias'] ?>" data-id="<?= $id ?>"><select>
                                 <? for ($i = 1; $i <= 5; $i++) {
                                     if ($i == $product['productQuantity']) { ?>
                                         <option selected><?= $i ?></option>
@@ -46,7 +48,6 @@ use yii\widgets\ActiveForm;
                                 <? }} ?>
                                 </select></td>
                             <td class="total">&#8381;<?= number_format($product['price'] * $product['productQuantity'], 2, '.', ' ') ?></td>
-<!--                            <td class="delete" data-id="--><?//= $id ?><!--"><a href="#" class="ico-del"></a></td>-->
                             <td class="delete" data-id="<?= $id ?>"><span class="ico-del"></span></td>
                         </tr>
                     <? } ?>

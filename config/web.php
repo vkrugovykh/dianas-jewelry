@@ -83,6 +83,7 @@ $config = [
                 'cart' => 'cart/open',
                 'login' => 'admin/login',
                 'logout' => 'admin/logout',
+                'subscribe' => 'subscribe/subscribe',
             ],
         ],
 

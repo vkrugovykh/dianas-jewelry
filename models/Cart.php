@@ -12,30 +12,43 @@ use yii\db\ActiveRecord;
 
 class Cart extends ActiveRecord
 {
-    public function addToCart($product)
+    public function addToCart($product, $qnt = 1)
     {
         if (isset($_SESSION['cart'][$product->id])) {
-            if ($_SESSION['cart'][$product->id]['productQuantity'] < 5) {
-                $_SESSION['cart'][$product->id]['productQuantity'] += 1;
-                $_SESSION['cart.totalQuantity'] = isset($_SESSION['cart.totalQuantity']) ? $_SESSION['cart.totalQuantity'] + 1 : 1;
-            } else {
-                $_SESSION['cart'][$product->id]['productQuantity'] = 5;
+            if ($qnt + $_SESSION['cart'][$product->id]['productQuantity'] <= 5) {
+                $productsQnt = $qnt;
+            } else if ($qnt + $_SESSION['cart'][$product->id]['productQuantity'] > 5) {
+                $productsQnt = 5 - $_SESSION['cart'][$product->id]['productQuantity'];
             }
+            $_SESSION['cart'][$product->id]['productQuantity'] += $productsQnt;
+
+            $_SESSION['cart.totalQuantity'] = isset($_SESSION['cart.totalQuantity']) ? $_SESSION['cart.totalQuantity'] + $productsQnt : $productsQnt;
+            $_SESSION['cart.totalSum'] = isset($_SESSION['cart.totalSum']) ? $_SESSION['cart.totalSum'] + $product->getProductPromo($product->alias) * $productsQnt : $product->getProductPromo($product->alias) * $productsQnt;
+
+//            else {
+//                $_SESSION['cart'][$product->id]['productQuantity'] = 5;
+//            }
 
         } else {
+            $productsQnt = $qnt;
             $_SESSION['cart'][$product->id] = [
-                'productQuantity' => 1,
+                'productQuantity' => $productsQnt,
                 'name' => $product['name'],
                 'short_description' => $product['short_description'],
-                'price' => $product['price'],
+                'price' => $product->getProductPromo($product['alias']),
+//                'price' => $product['price'],
                 'img' => $product['img'],
+                'alias' => $product['alias'],
             ];
-            $_SESSION['cart.totalQuantity'] = isset($_SESSION['cart.totalQuantity']) ? $_SESSION['cart.totalQuantity'] + 1 : 1;
+
+            $_SESSION['cart.totalQuantity'] = isset($_SESSION['cart.totalQuantity']) ? $_SESSION['cart.totalQuantity'] + $productsQnt : $productsQnt;
+            $_SESSION['cart.totalSum'] = isset($_SESSION['cart.totalSum']) ? $_SESSION['cart.totalSum'] + $product->getProductPromo($product->alias) * $productsQnt : $product->getProductPromo($product->alias) * $productsQnt;
         }
 
         //$_SESSION['cart.totalQuantity'] = isset($_SESSION['cart.totalQuantity']) ? $_SESSION['cart.totalQuantity'] + 1 : 1;
 
-        $_SESSION['cart.totalSum'] = isset($_SESSION['cart.totalSum']) ? $_SESSION['cart.totalSum'] + $product->price : $product->price;
+//        $_SESSION['cart.totalSum'] = isset($_SESSION['cart.totalSum']) ? $_SESSION['cart.totalSum'] + $product->getProductPromo($product->alias) * $productsQnt : $product->getProductPromo($product->alias) * $productsQnt;
+//        $_SESSION['cart.totalSum'] = isset($_SESSION['cart.totalSum']) ? $_SESSION['cart.totalSum'] + $product->price : $product->price;
     }
 
     public function recalcCart($id)
@@ -47,4 +60,13 @@ class Cart extends ActiveRecord
         unset($_SESSION['cart'][$id]);
     }
 
+    public function changeInCart($id, $qnt) {
+        $quantity = $_SESSION['cart'][$id]['productQuantity'];
+        $subtraction = $qnt - $quantity;
+        $_SESSION['cart'][$id]['productQuantity'] += $subtraction;
+
+        $_SESSION['cart.totalQuantity'] += $subtraction;
+
+        $_SESSION['cart.totalSum'] += ($subtraction * $_SESSION['cart'][$id]['price']);
+    }
 }

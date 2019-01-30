@@ -16,11 +16,13 @@ class ProductController extends Controller
 {
     public function actionIndex($alias)
     {
+        $allProducts = new Products();
+
         $product = new Products();
         $product = $product->getOneProduct($alias);
 
         $returns = new Returns();
         $returns = $returns->getOneReturn($product['returns_id']);
-        return $this->render('index', compact('product', 'returns'));
+        return $this->render('index', compact('product', ['returns', 'allProducts']));
     }
 }

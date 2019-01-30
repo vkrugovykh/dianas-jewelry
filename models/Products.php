@@ -12,6 +12,7 @@ namespace app\models;
 use Yii;
 use yii\data\Pagination;
 use yii\db\ActiveRecord;
+use yii\db\Query;
 
 class Products extends ActiveRecord
 {
@@ -25,7 +26,7 @@ class Products extends ActiveRecord
     //Получим все товары и закэшируем
     public function getAllProducts($limit = 10)
     {
-        $products = Yii::$app->cache->get('goods');
+        $products = Yii::$app->cache->get('products');
         if (!$products) {
             $products = Products::find()->orderBy(['id'=>SORT_DESC])->limit($limit)->asArray()->all();
             Yii::$app->cache->set('products', $products, 10);
@@ -34,16 +35,26 @@ class Products extends ActiveRecord
         return $products;
     }
 
+
     //Получим все товары определенной категории  и закэшируем
-    public function getProductsCategories($id, $page, $pageSize = 8)
+    public function getProductsCategories($id, $page = 1, $pageSize = '8')
     {
 
         //Получаем ID категории товаров
         $categoryId = Category::find()->where(['category_alias' => $id])->one();
 
-        $query = Products::find()->where(['category_id' => $categoryId['id']]);
+        switch ($id) {
+
+            case 'promo':
+                $query = Products::find()->innerJoin('promo', 'products.id = promo.product_id');
+                break;
+            default:
+                $query = Products::find()->where(['category_id' => $categoryId['id']]);
+                break;
+        }
 
         //Общее количество товаров в категории
+
         $count = $query->count();
 
         //Для пагинации
@@ -54,6 +65,7 @@ class Products extends ActiveRecord
 
         //Проверяем наличие данных в кэше, если нет, то не используем кэш, но добавляем в него данные для дальнейшей работы
         if (!$data['catProducts']) {
+
 
             $catProducts = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
@@ -72,6 +84,23 @@ class Products extends ActiveRecord
     public function getOneProduct($alias)
     {
         return Products::find()->where(['alias' => $alias])->one();
+    }
+
+    public function getProductPromo($alias)
+    {
+        $product = new Products();
+        $product = $product->getOneProduct($alias);
+
+        $promo = new Promo();
+        $percent = $promo->getPromoOfProduct($product['id']);
+
+        if (Yii::$app->user->isGuest) {
+            $price = $product['price'];
+        } else {
+            $price = $product['price'] - ($product['price']) * 10 / 100;
+        }
+
+        return $price - ($product['price'] * $percent / 100);
     }
 
     //Получим все товары поиска по имени

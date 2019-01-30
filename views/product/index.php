@@ -2,6 +2,14 @@
     use yii\helpers\Url;
 
     $this->title = 'Dianas jewelry | интернет магазин ювелирных изделий';
+
+    if (Yii::$app->user->isGuest) {
+        $price = $product['price'];
+    } else {
+        $price = $product['price'] - ($product['price']) * 10 / 100;
+    }
+
+    $promo = $allProducts->getProductPromo($product['alias']);
 ?>
 
 <div id="breadcrumbs">
@@ -24,7 +32,15 @@
                 </div>
                 <div class="details">
                     <h1><?= $product['name']; ?></h1>
-                    <h4>&#8381;<?= number_format($product['price'], 2, '.', ' ') ?></h4>
+
+                    <? if ($promo != $price) { ?>
+                        <h4 style="color: mediumseagreen; display: inline-block; padding-right: 20px;">&#8381; <?= number_format($promo, 2, '.', ' ') ?></h4>
+                        <h4 style="text-decoration: line-through; font-size: 24px; display: inline-block;">&#8381; <?= number_format($price, 2, '.', ' ') ?></h4>
+                    <? } else { ?>
+                        <h4>&#8381;<?= number_format($price, 2, '.', ' ') ?></h4>
+                    <? } ?>
+
+<!--                    <h4>&#8381;--><?//= number_format($price, 2, '.', ' ') ?><!--</h4>-->
                     <div class="entry">
                         <p><?= $product['short_description']; ?></p>
                         <div class="tabs">

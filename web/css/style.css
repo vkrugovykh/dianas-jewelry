@@ -465,7 +465,7 @@ a:hover {
 	color: #939597;
 	font-family: "Roboto";
 	font-size: 24px;
-	padding: 0 0 22px;
+	padding: 0 0 10px;
 }
 
 .products .btn-add {
@@ -501,7 +501,7 @@ a:hover {
 .products article {
 	width: 235px;
 	padding: 18px 0 0;
-	height: 455px; /*405*/
+	height: 477px; /*405*/
 	border: 1px solid #d3d3d3;
 	background-color: #fff;
 	text-align: center;
@@ -532,7 +532,7 @@ a:hover {
 .last-products .products article {
 	border-top: 0;
 	border-bottom: 0;
-	height: 453px; /*403*/
+	height: 465px; /*403*/
 }
 
 .last-products .bx-next:after {
@@ -763,6 +763,94 @@ h1 {
 	padding: 32px 0 12px;
 }
 
+.modal-success {
+	display: block;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.8);
+	z-index: 16000;
+}
+
+.popup-success {
+	position: fixed;
+	left: 50%;
+	top: 80px;
+	width: 90%;
+	height: 80%;
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+	background: white;
+	overflow-y: auto;
+}
+
+.success-info {
+	padding: 20px;
+}
+
+.success-info h3 {
+	font-size: 32px;
+	text-align: center;
+}
+
+.success-info .cart-table table {
+	width: 100%;
+}
+.success-info .cart-table table .items {
+	width: 60%;
+	padding: 10px;
+}
+
+.success-info .cart-table table .items h3 {
+	text-align: left;
+	margin-left: 60px;
+	padding: 0;
+}
+
+.success-info .cart-table table .items p {
+	text-align: left;
+	margin-left: 60px;
+	padding: 0;
+}
+
+.success-info .cart-table table .qnt {
+	text-align: center;
+}
+
+.success-info .cart-table table .image {
+	height: auto;
+	width: 50px;
+	padding: 0;
+}
+
+.popup-close {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	border: 3px solid white;
+	border-radius: 50%;
+	right: 0;
+	left: 0;
+	margin-left: auto;
+	margin-right: auto;
+	top: 22px;
+	font-size: 76px;
+	text-align: center;
+	line-height: 46px;
+	color: #ffffff;
+	cursor: pointer;
+}
+
+.popup-close:hover {
+	text-decoration: none;
+	width: 54px;
+	height: 54px;
+	line-height: 49px;
+	top: 20px;
+}
+
 .btn-grey {
 	display: inline-block;
 	padding: 0 55px;
@@ -982,7 +1070,7 @@ h1 {
 	float: left;
 	overflow: hidden;
 	width: 570px;
-	height: 570px;
+	height: 617px;
 	margin: 13px 130px 0 0;
 	border: 1px solid #d3d3d3;
 	background-color: #fff;

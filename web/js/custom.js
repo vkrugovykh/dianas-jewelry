@@ -1,23 +1,3 @@
-//Оформление заказа
-// $('.total-count').on('click', '.btn-checkout', function() {
-// $('#checkout-form').on('submit', function() {
-//     console.log('click');
-//     $.ajax({
-//         url: '/cart/order',
-//         type: 'GET',
-//         success: function(response) {
-//             console.log('2-click');
-//             $('.content').html(response);
-//             $('.menu-total-quantity').html(0);
-//             $('.menu-total-sum').html(0);
-//         },
-//         error: function() {
-//             alert('error');
-//         }
-//     })
-// });
-
-
 //Очистка корзины
 function clearCart(event, conf) {
     event.preventDefault();
@@ -49,11 +29,13 @@ function clearCart(event, conf) {
 $('.btn-add').on('click', function(event) {
     event.preventDefault();
     let alias = $(this).data('alias');
-    //console.log(alias);
-
+    let qnt = 1;
+    if ($('span.option').text()) {
+        qnt = $('span.option').text();
+    }
     $.ajax({
         url: '/cart/add',
-        data: {alias: alias},
+        data: {alias: alias, qnt: qnt},
         type: 'GET',
         success: function(response) {
             let res = response.split('/');
@@ -84,6 +66,36 @@ function loadAll() {
             break;
         }
     }
+
+
+    //Изменение количества товаров в корзине
+    $('body').on('click', '.crf-sm li',  function() {
+        let qnt = $(this).text();
+        let id = $('#' + $(this).offsetParent().data('id')).parent('.qnt').data('id');
+        // let alias = $('#' + $(this).offsetParent().data('id')).parent('.qnt').data('alias');
+
+        $.ajax({
+            url: '/cart/change',
+            data: {qnt: qnt, id: id},
+            type: 'GET',
+            success: function(response) {
+                $('.content').html(response);
+                loadAll();
+                $("select").crfs();
+                let totalSum = 0;
+                let totalCount = 0;
+                if ($('.total-count .total-quantity').html()) {
+                    totalSum = $('.total-count .total-sum').html().split('₽')[1];
+                    totalCount = $('.total-count .total-quantity').html().split(': ')[1];
+                }
+                $('.menu-total-quantity').html(totalCount);
+                $('.menu-total-sum').html(totalSum);
+            },
+            error: function() {
+                alert('error');
+            }
+        })
+    });
 
 
     //Удаление товара из корзины

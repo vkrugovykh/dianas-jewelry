@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveRecord;
 
 class User extends ActiveRecord implements \yii\web\IdentityInterface
@@ -52,12 +53,11 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
 
     public function isAdmin()
     {
-        if ($this->is_admin == 1) {
+        if (Yii::$app->user->identity->is_admin === 1) {
             return true;
         } else {
             return false;
         }
-//        return $this->is_admin;
     }
 
 

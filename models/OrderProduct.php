@@ -25,7 +25,8 @@ class OrderProduct extends \yii\db\ActiveRecord
     {
         return [
             [['order_id', 'product_id'], 'required'],
-            [['order_id', 'product_id', 'price', 'quantity', 'sum'], 'integer'],
+            [['order_id', 'product_id', 'quantity'], 'integer'],
+            [['price', 'sum'], 'double'],
             [['name'], 'string', 'max' => 255],
         ];
     }

@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\LoginForm;
+use app\models\User;
 use Yii;
 use app\models\Order;
 use yii\data\ActiveDataProvider;
@@ -43,65 +44,69 @@ class AdminController extends Controller
         ];
     }
 
-    /**
-     * Lists all Order models.
-     * @return mixed
-     */
+
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Order::find(),
-        ]);
+        $user = new User();
+        if ($user->isAdmin()) {
+            $dataProvider = new ActiveDataProvider([
+                'query' => Order::find(),
+            ]);
 
-        $this->layout = 'admin-layout';
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+            $this->layout = 'admin-layout';
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            return $this->goHome();
+        }
     }
 
-    /**
-     * Displays a single Order model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionView($id)
     {
-        $this->layout = 'admin-layout';
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $user = new User();
+        if ($user->isAdmin()) {
+
+            $this->layout = 'admin-layout';
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        } else {
+            return $this->goHome();
+        }
     }
 
 
 
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $user = new User();
+        if ($user->isAdmin()) {
+            $model = $this->findModel($id);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+            $this->layout = 'admin-layout';
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        } else {
+            return $this->goHome();
         }
 
-        $this->layout = 'admin-layout';
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
-    /**
-     * Deletes an existing Order model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionDelete($id)
     {
-
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $user = new User();
+        if ($user->isAdmin()) {
+            $this->findModel($id)->delete();
+            return $this->redirect(['index']);
+        } else {
+            return $this->goHome();
+        }
     }
 
 
@@ -113,26 +118,6 @@ class AdminController extends Controller
     }
 
 
-//    public function actionLogin()
-//    {
-//        if (!Yii::$app->user->isGuest) {
-//            return $this->render('index');
-//        }
-//
-//        $this->layout = 'admin-layout';
-//        $model = new LoginForm();
-//        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-//            $dataProvider = new ActiveDataProvider([
-//                'query' => Order::find(),
-//            ]);
-//            return $this->render('index', compact('dataProvider'));
-//        }
-//
-//        $model->password = '';
-//        return $this->render('login', [
-//            'model' => $model,
-//        ]);
-//    }
 
     public function actionLogin()
     {
@@ -146,7 +131,12 @@ class AdminController extends Controller
             $dataProvider = new ActiveDataProvider([
                 'query' => Order::find(),
             ]);
+            $user = new User();
+            if ($user->isAdmin()) {
             return $this->render('index', compact('dataProvider'));
+            } else {
+                return $this->goHome();
+            }
 //            return $this->goBack();
         }
 
@@ -165,6 +155,6 @@ class AdminController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Запрашиваемая страница не существует.');
     }
 }
